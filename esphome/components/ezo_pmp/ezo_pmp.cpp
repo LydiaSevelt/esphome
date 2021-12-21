@@ -34,13 +34,13 @@ void EZOPMPSensor::update() {
 void EZOPMPSensor::loop() {
   uint8_t buf[21];
   if (!(this->state_ & EZO_STATE_WAIT)) {
-    if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
-      int len = sprintf((char *) buf, "D,%0.3f", this->dispense_ml_);
-      this->write(buf, len);
-      this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
-      this->start_time_ = millis();
-      this->wait_time_ = 300;
-    }
+//    if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
+//      int len = sprintf((char *) buf, "D,%0.3f", this->dispense_ml_);
+//      this->write(buf, len);
+//      this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
+//      this->start_time_ = millis();
+//      this->wait_time_ = 300;
+//    }
     return;
   }
   if (millis() - this->start_time_ < this->wait_time_)
@@ -83,10 +83,10 @@ void EZOPMPSensor::loop() {
   this->publish_state(val);
 }
 
-void EZOPMPSensor::dispense_ml(float temp) {
-  this->dispense_ml_ = temp;
-  this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
-}
+//void EZOPMPSensor::dispense_ml(float temp) {
+//  this->dispense_ml_ = temp;
+//  this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
+//}
 
 }  // namespace ezo_pmp
 }  // namespace esphome

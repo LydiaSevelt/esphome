@@ -14,7 +14,7 @@ class EZOPMPSensor : public sensor::Sensor, public PollingComponent, public i2c:
   void dump_config() override;
   void update() override;
   float get_setup_priority() const override { return setup_priority::DATA; };
-  void dispense_ml(float ml);  
+//  void dispense_ml(float ml);  
 
  protected:
   uint32_t start_time_ = 0;
