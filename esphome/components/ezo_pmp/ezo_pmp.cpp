@@ -34,7 +34,7 @@ void EZOPMPSensor::update() {
 void EZOPMPSensor::loop() {
   uint8_t buf[21];
   if (!(this->state_ & EZO_STATE_WAIT)) {
-    if (this->state_ & EZO_STATE_SEND_TEMP) {
+    if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
       int len = sprintf((char *) buf, "D,%0.3f", this->dispense_ml_);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
@@ -83,7 +83,7 @@ void EZOPMPSensor::loop() {
   this->publish_state(val);
 }
 
-void EZOPMPSensor::set_dispense_ml(float temp) {
+void EZOPMPSensor::dispense_ml(float temp) {
   this->dispense_ml_ = temp;
   this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
 }
