@@ -3,7 +3,6 @@
 #include "esphome/core/component.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/i2c/i2c.h"
-#include "esphome/components/ezo_pmp/ezo_pmp.h"
 
 namespace esphome {
 namespace ezo_pmp {
@@ -15,12 +14,13 @@ class EZOPMPSensor : public sensor::Sensor, public PollingComponent, public i2c:
   void dump_config() override;
   void update() override;
   float get_setup_priority() const override { return setup_priority::DATA; };
-  
+  void dispense_ml(float ml);  
 
  protected:
   uint32_t start_time_ = 0;
   uint32_t wait_time_ = 0;
   uint16_t state_ = 0;
+  float dispense_ml_;
 };
 
 }  // namespace ezo_pmp

@@ -8,8 +8,8 @@ namespace ezo_pmp {
 static const char *const TAG = "ezo_pmp.sensor";
 
 static const uint16_t EZO_STATE_WAIT = 1;
-static const uint16_t EZO_STATE_SEND_TEMP = 2;
-static const uint16_t EZO_STATE_WAIT_TEMP = 4;
+static const uint16_t EZO_STATE_SEND_DISPENSE_ML = 2;
+static const uint16_t EZO_STATE_WAIT_DISPENSE_ML = 4;
 
 void EZOPMPSensor::dump_config() {
   LOG_SENSOR("", "EZO_PMP", this);
@@ -34,13 +34,13 @@ void EZOPMPSensor::update() {
 void EZOPMPSensor::loop() {
   uint8_t buf[21];
   if (!(this->state_ & EZO_STATE_WAIT)) {
-    //if (this->state_ & EZO_STATE_SEND_TEMP) {
-      //int len = sprintf((char *) buf, "T,%0.3f", this->tempcomp_);
-      //this->write(buf, len);
-      //this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_TEMP;
-      //this->start_time_ = millis();
-      //this->wait_time_ = 300;
-    //}
+    if (this->state_ & EZO_STATE_SEND_TEMP) {
+      int len = sprintf((char *) buf, "D,%0.3f", this->dispense_ml_);
+      this->write(buf, len);
+      this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
+      this->start_time_ = millis();
+      this->wait_time_ = 300;
+    }
     return;
   }
   if (millis() - this->start_time_ < this->wait_time_)
@@ -66,7 +66,7 @@ void EZOPMPSensor::loop() {
       ESP_LOGE(TAG, "device returned an unknown response: %d", buf[0]);
       break;
   }
-  if (this->state_ & EZO_STATE_WAIT_TEMP) {
+  if (this->state_ & EZO_STATE_WAIT_DISPENSE_ML) {
     this->state_ = 0;
     return;
   }
@@ -83,10 +83,10 @@ void EZOPMPSensor::loop() {
   this->publish_state(val);
 }
 
-//void EZOSensor::set_tempcomp_value(float temp) {
-//  this->tempcomp_ = temp;
-//  this->state_ |= EZO_STATE_SEND_TEMP;
-//}
+void EZOPMPSensor::set_dispense_ml(float temp) {
+  this->dispense_ml_ = temp;
+  this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
+}
 
 }  // namespace ezo_pmp
 }  // namespace esphome
