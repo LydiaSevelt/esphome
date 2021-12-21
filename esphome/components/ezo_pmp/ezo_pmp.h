@@ -20,7 +20,7 @@ class EZOPMPSensor : public sensor::Sensor, public PollingComponent, public i2c:
   uint32_t start_time_ = 0;
   uint32_t wait_time_ = 0;
   uint16_t state_ = 0;
-  float dispense_ml_;
+//  float dispense_ml_;
 };
 
 }  // namespace ezo_pmp
