@@ -101,7 +101,7 @@ void EZOPMPSensor::dispense_ml(float ml) {
   this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
 }
 
-void EZOSensor::send_command(std::string &cmd) {
+void EZOPMPSensor::send_command(std::string &cmd) {
   this->command_ = cmd.c_str(); // store const char * of input string into command_
   ESP_LOGE(TAG, "sending command to device: %s", this->command_); // log the command
   this->state_ |= EZO_STATE_SEND_CMD;
