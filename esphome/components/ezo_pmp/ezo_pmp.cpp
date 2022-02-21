@@ -27,7 +27,7 @@ void EZOPMPSensor::update() {
     return;
   }
   //uint8_t c = 'R';
-  uint8_t buf[4];
+  uint8_t buf[5];
   int len = sprintf((char *) buf, "TV,?");
   this->write(buf, len);
   this->state_ |= EZO_STATE_WAIT;
