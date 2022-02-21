@@ -95,7 +95,7 @@ void EZOPMPSensor::loop() {
   //    buf[i] = '\0';
 
   // remove leading data from float ex: ?TV,<float>
-  uint8_t *bufcut[21];
+  uint8_t bufcut[21];
   bool post_comma = false;
   size_t n = 1;
   for (size_t i = 1; i < sizeof(buf) - 1; i++) {
