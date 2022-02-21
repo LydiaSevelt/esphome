@@ -82,11 +82,11 @@ void EZOPMPSensor::loop() {
       break;
   }
   if (this->state_ & EZO_STATE_WAIT_DISPENSE_ML) {
-    //this->state_ = 0;
+    this->state_ = 0;
     return;
   }
-  if (this->state_ & EZO_STATE_SEND_CMD) {
-    //this->state_ = 0;
+  if (this->state_ & EZO_STATE_WAIT_CMD) {
+    this->state_ = 0;
     return;
   }
   this->state_ &= ~EZO_STATE_WAIT;
