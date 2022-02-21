@@ -32,7 +32,7 @@ void EZOPMPSensor::update() {
   this->write(buf, len);
   this->state_ |= EZO_STATE_WAIT;
   this->start_time_ = millis();
-  this->wait_time_ = 300;
+  this->wait_time_ = 400;
 }
 
 void EZOPMPSensor::loop() {
@@ -43,7 +43,7 @@ void EZOPMPSensor::loop() {
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
       this->start_time_ = millis();
-      this->wait_time_ = 300;
+      this->wait_time_ = 400;
     }
     if (this->state_ & EZO_STATE_SEND_CMD) {
       int len = sprintf((char *) buf, "%s", this->command_);
@@ -51,9 +51,9 @@ void EZOPMPSensor::loop() {
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_CMD;
       this->start_time_ = millis();
       if (this->command_[0] == 'C' || this->command_[0] == 'R' ) {
-        this->wait_time_ = 300;  // If calibrating or reading, set wait time to 1400ms
+        this->wait_time_ = 400;  // If calibrating or reading, set wait time to 1400ms
       } else {
-        this->wait_time_ = 300; // all other commands get wait time of 300ms
+        this->wait_time_ = 400; // all other commands get wait time of 300ms
       }
     }
     return;
