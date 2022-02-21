@@ -41,6 +41,17 @@ void EZOPMPSensor::loop() {
       this->start_time_ = millis();
       this->wait_time_ = 300;
     }
+    if (this->state_ & EZO_STATE_SEND_CMD) {
+        int len = sprintf((char *) buf, "%s", this->command_);
+        this->write(buf, len);
+        this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_CMD;
+        this->start_time_ = millis();
+        if (this->command_[0] == 'C' || this->command_[0] == 'R' ) {
+          this->wait_time_ = 1400;  // If calibrating or reading, set wait time to 1400ms
+        } else {
+          this->wait_time_ = 300; // all other commands get wait time of 300ms
+        }
+    }
     return;
   }
   if (millis() - this->start_time_ < this->wait_time_)
@@ -86,6 +97,12 @@ void EZOPMPSensor::loop() {
 void EZOPMPSensor::dispense_ml(float ml) {
   this->dispense_ml_ = ml;
   this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
+}
+
+void EZOSensor::send_command(std::string &cmd) {
+  this->command_ = cmd.c_str(); // store const char * of input string into command_
+  ESP_LOGE(TAG, "sending command to device: %s", this->command_); // log the command
+  this->state_ |= EZO_STATE_SEND_CMD;
 }
 
 }  // namespace ezo_pmp
