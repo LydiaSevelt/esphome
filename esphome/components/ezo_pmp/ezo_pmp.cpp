@@ -94,7 +94,15 @@ void EZOPMPSensor::loop() {
   //  if (buf[i] == ',')
   //    buf[i] = '\0';
 
-  float val = parse_number<float>((char *) &buf[1]).value_or(0);
+  uint8_t *bufcut;
+  if ((bufcut = strchr (buf, ','))) {      /* find 1st ',' */
+    do
+      bufcut++;                    /* advance pointer */
+    while (*bufcut && isspace (*bufcut)); /* to end or 1st non-whitespace */
+  }
+
+
+  float val = parse_number<float>((char *) &bufcut[1]).value_or(0);
   this->publish_state(val);
 }
 
