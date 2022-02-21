@@ -94,13 +94,19 @@ void EZOPMPSensor::loop() {
   //  if (buf[i] == ',')
   //    buf[i] = '\0';
 
+  // remove leading data from float ex: ?TV,<float>
   uint8_t *bufcut[21];
-  if ((bufcut = strchr (buf, ','))) {      /* find 1st ',' */
-    do
-      bufcut++;                    /* advance pointer */
-    while (*bufcut && isspace (*bufcut)); /* to end or 1st non-whitespace */
+  bool post_comma = false;
+  size_t n = 1
+  for (size_t i = 1; i < sizeof(buf) - 1; i++) {
+    if (post_comma == true) {
+        bufcut[n] = buf[i];
+        n++;
+    }
+    if (buf[i] == ',') {
+      post_comma = true;
+    }
   }
-
 
   float val = parse_number<float>((char *) &bufcut[1]).value_or(0);
   this->publish_state(val);
