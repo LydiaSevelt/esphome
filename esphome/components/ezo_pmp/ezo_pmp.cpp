@@ -40,6 +40,7 @@ void EZOPMPSensor::loop() {
   if (!(this->state_ & EZO_STATE_WAIT)) {
     if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
       int len = sprintf((char *) buf, "D,%s", this->dispense_ml_);
+      ESP_LOGE(TAG, "Command: D,%s", this->dispense_ml_);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
       this->start_time_ = millis();
@@ -47,7 +48,7 @@ void EZOPMPSensor::loop() {
     }
     if (this->state_ & EZO_STATE_SEND_CMD) {
       int len = sprintf((char *) buf, "%s", this->command_);
-      ESP_LOGE(TAG, "%s", this->command_);
+      ESP_LOGE(TAG, "Command: %s", this->command_);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_CMD;
       this->start_time_ = millis();
