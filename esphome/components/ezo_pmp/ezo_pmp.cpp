@@ -85,6 +85,10 @@ void EZOPMPSensor::loop() {
     this->state_ = 0;
     return;
   }
+  if (this->state_ & EZO_STATE_SEND_CMD) {
+    this->state_ = 0;
+    return;
+  }
   this->state_ &= ~EZO_STATE_WAIT;
   if (buf[0] != 1)
     return;
