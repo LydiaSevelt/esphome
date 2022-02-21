@@ -51,7 +51,7 @@ void EZOPMPSensor::loop() {
         if (this->command_[0] == 'C' || this->command_[0] == 'R' ) {
           this->wait_time_ = 1400;  // If calibrating or reading, set wait time to 1400ms
         } else {
-          this->wait_time_ = 300; // all other commands get wait time of 300ms
+          this->wait_time_ = 600; // all other commands get wait time of 300ms
         }
     }
     return;
