@@ -36,7 +36,7 @@ void EZOPMPSensor::update() {
 }
 
 void EZOPMPSensor::loop() {
-  uint8_t buf[21];
+  uint8_t buf[42];
   if (!(this->state_ & EZO_STATE_WAIT)) {
     if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
       int len = sprintf((char *) buf, "D,%s", this->dispense_ml_);
@@ -102,7 +102,7 @@ void EZOPMPSensor::loop() {
   //    buf[i] = '\0';
 
   // remove leading data from float ex: ?TV,<float>
-  uint8_t bufcut[21];
+  uint8_t bufcut[42];
   bool post_comma = false;
   size_t n = 1;
   for (size_t i = 1; i < sizeof(buf) - 1; i++) {
