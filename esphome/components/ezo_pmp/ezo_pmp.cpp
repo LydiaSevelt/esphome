@@ -36,11 +36,12 @@ void EZOPMPSensor::update() {
 }
 
 void EZOPMPSensor::loop() {
-  uint8_t buf[42];
+  uint8_t buf[21];
   if (!(this->state_ & EZO_STATE_WAIT)) {
     if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
       int len = sprintf((char *) buf, "D,%s", this->dispense_ml_);
       ESP_LOGE(TAG, "Command: D,%s", this->dispense_ml_);
+      ESP_LOGE(TAG, "Command len: %d", len);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
       this->start_time_ = millis();
@@ -49,6 +50,7 @@ void EZOPMPSensor::loop() {
     if (this->state_ & EZO_STATE_SEND_CMD) {
       int len = sprintf((char *) buf, "%s", this->command_);
       ESP_LOGE(TAG, "Command: %s", this->command_);
+      ESP_LOGE(TAG, "Command len: %d", len);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_CMD;
       this->start_time_ = millis();
@@ -102,7 +104,7 @@ void EZOPMPSensor::loop() {
   //    buf[i] = '\0';
 
   // remove leading data from float ex: ?TV,<float>
-  uint8_t bufcut[42];
+  uint8_t bufcut[21];
   bool post_comma = false;
   size_t n = 1;
   for (size_t i = 1; i < sizeof(buf) - 1; i++) {
