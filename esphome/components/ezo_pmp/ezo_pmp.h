@@ -15,15 +15,14 @@ class EZOPMPSensor : public sensor::Sensor, public PollingComponent, public i2c:
   void update() override;
   float get_setup_priority() const override { return setup_priority::DATA; };
 
-  void dispense_ml(float ml);  
-
+  void dispense_ml(std::string &cmd);  
   void send_command(std::string &cmd); // command to pass to the EZO device
 
  protected:
   uint32_t start_time_ = 0;
   uint32_t wait_time_ = 0;
   uint16_t state_ = 0;
-  float dispense_ml_;
+  const char *dispense_ml_;
   const char *command_;
 };
 

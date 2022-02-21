@@ -39,22 +39,22 @@ void EZOPMPSensor::loop() {
   uint8_t buf[21];
   if (!(this->state_ & EZO_STATE_WAIT)) {
     if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
-      int len = sprintf((char *) buf, "D,%0.3f", this->dispense_ml_);
+      int len = sprintf((char *) buf, "D,%s", this->dispense_ml_);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_DISPENSE_ML;
       this->start_time_ = millis();
       this->wait_time_ = 300;
     }
     if (this->state_ & EZO_STATE_SEND_CMD) {
-        int len = sprintf((char *) buf, "%s", this->command_);
-        this->write(buf, len);
-        this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_CMD;
-        this->start_time_ = millis();
-        if (this->command_[0] == 'C' || this->command_[0] == 'R' ) {
-          this->wait_time_ = 1400;  // If calibrating or reading, set wait time to 1400ms
-        } else {
-          this->wait_time_ = 900; // all other commands get wait time of 300ms
-        }
+      int len = sprintf((char *) buf, "%s", this->command_);
+      this->write(buf, len);
+      this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_CMD;
+      this->start_time_ = millis();
+      if (this->command_[0] == 'C' || this->command_[0] == 'R' ) {
+        this->wait_time_ = 1400;  // If calibrating or reading, set wait time to 1400ms
+      } else {
+        this->wait_time_ = 900; // all other commands get wait time of 300ms
+      }
     }
     return;
   }
@@ -116,8 +116,9 @@ void EZOPMPSensor::loop() {
   this->publish_state(val);
 }
 
-void EZOPMPSensor::dispense_ml(float ml) {
-  this->dispense_ml_ = ml;
+void EZOPMPSensor::dispense_ml(std::string &cmd) {
+  this->dispense_ml_ = cmd.c_str(); // store const char * of input string into command_
+  ESP_LOGE(TAG, "sending ml to dispense: %s", this->dispense_ml_); // log the command
   this->state_ |= EZO_STATE_SEND_DISPENSE_ML;
 }
 
