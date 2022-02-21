@@ -26,8 +26,9 @@ void EZOPMPSensor::update() {
     ESP_LOGE(TAG, "update overrun, still waiting for previous response");
     return;
   }
-  uint8_t c = 'R';
-  this->write(&c, 1);
+  //uint8_t c = 'R';
+  int len = sprintf((char *) buf, "TV,?");
+  this->write(buf, len);
   this->state_ |= EZO_STATE_WAIT;
   this->start_time_ = millis();
   this->wait_time_ = 900;
@@ -51,7 +52,7 @@ void EZOPMPSensor::loop() {
         if (this->command_[0] == 'C' || this->command_[0] == 'R' ) {
           this->wait_time_ = 1400;  // If calibrating or reading, set wait time to 1400ms
         } else {
-          this->wait_time_ = 600; // all other commands get wait time of 300ms
+          this->wait_time_ = 900; // all other commands get wait time of 300ms
         }
     }
     return;
