@@ -94,7 +94,7 @@ void EZOPMPSensor::loop() {
   //  if (buf[i] == ',')
   //    buf[i] = '\0';
 
-  char *bufcut;
+  uint8_t *bufcut[21];
   if ((bufcut = strchr (buf, ','))) {      /* find 1st ',' */
     do
       bufcut++;                    /* advance pointer */
