@@ -39,7 +39,7 @@ void EZOPMPSensor::loop() {
   uint8_t buf[21];
   if (!(this->state_ & EZO_STATE_WAIT)) {
     if (this->state_ & EZO_STATE_SEND_DISPENSE_ML) {
-      int len = sprintf((char *) buf, "D,%s", this->command__);
+      int len = sprintf((char *) buf, "D,%s", this->command_);
       ESP_LOGE(TAG, "Command: D,%s", this->command_);
     }
     if (this->state_ & EZO_STATE_SEND_CMD) {
