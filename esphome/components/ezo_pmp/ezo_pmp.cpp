@@ -8,10 +8,10 @@ namespace ezo_pmp {
 static const char *const TAG = "ezo_pmp.sensor";
 
 static const uint16_t EZO_STATE_WAIT = 1;
-static const uint16_t EZO_STATE_SEND_DISPENSE_ML = 4;
-static const uint16_t EZO_STATE_WAIT_DISPENSE_ML = 8;
-static const uint16_t EZO_STATE_SEND_CMD = 16;
-static const uint16_t EZO_STATE_WAIT_CMD = 32;
+static const uint16_t EZO_STATE_SEND_DISPENSE_ML = 2;
+static const uint16_t EZO_STATE_WAIT_DISPENSE_ML = 4;
+static const uint16_t EZO_STATE_SEND_CMD = 8;
+static const uint16_t EZO_STATE_WAIT_CMD = 16;
 
 void EZOPMPSensor::dump_config() {
   LOG_SENSOR("", "EZO_PMP", this);
